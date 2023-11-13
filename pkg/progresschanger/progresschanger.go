@@ -3,14 +3,21 @@ package progresschanger
 import(
 	"fmt"
 	"os"
+	"bufio"
+	"strconv"
 )
 
 func progressChanger(x int) (int){
+   scanner := bufio.NewScanner(os.Stdin)
+		
    for {
         var entry int;
         fmt.Println("\n\nEnter a number greater than the current percentage: \n")
-        fmt.Scanf("%d", &entry)
-        if entry > x {
+	scanner.Scan()
+	entryStr := scanner.Text()
+	entry, err := strconv.Atoi(entryStr)
+	
+        if entry > x && err == nil{
                 x = entry;
         	break;  
         } 
