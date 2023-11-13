@@ -8,14 +8,13 @@ import(
 func progressChanger(x int) (int){
    for {
         var entry int;
-        fmt.Println("Enter a number greater than the current percentage: \n")
+        fmt.Println("\n\nEnter a number greater than the current percentage: \n")
         fmt.Scanf("%d", &entry)
         if entry > x {
                 x = entry;
         	break;  
-        } else {
-        	fmt.Println("Enter a valid entry.")
-   	}
+        } 
+        fmt.Println("\n\nEnter a valid entry.")
    }
    return x;	
 }
@@ -23,16 +22,18 @@ func progressChanger(x int) (int){
 
 func RequestChange(x int) (int){
         for {
-        fmt.Println("Do you want to change your progress?\n")
+        fmt.Println("\n\nDo you want to change your progress?\n")
         var response string;
         fmt.Scanf("%s", &response)
-        if response == "yes" {
+        if response == "yes"{
                 x = progressChanger(x)
                 break;
-        } else if response == "no"{
+        }else if response == "no"{
                 fmt.Println("Exitting")
                 os.Exit(x)
-        }
+        }else{
+		fmt.Println("Enter a valid entry.")
+	}
         }
         return x;
 }
