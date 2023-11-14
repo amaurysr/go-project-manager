@@ -9,20 +9,23 @@ import(
 
 func progressChanger(x int) (int){
    scanner := bufio.NewScanner(os.Stdin)
-		
-   for {
-        var entry int;
-        fmt.Println("\n\nEnter a number greater than the current percentage: \n")
-	scanner.Scan()
-	entryStr := scanner.Text()
-	entry, err := strconv.Atoi(entryStr)
+   if x < 100 {			
+   	for {
+        	var entry int;
+        	fmt.Println("\n\nEnter a number greater than the current percentage: \n")
+		scanner.Scan()
+		entryStr := scanner.Text()
+		entry, err := strconv.Atoi(entryStr)
 	
-        if entry > x && err == nil{
-                x = entry;
-        	break;  
-        } 
-        fmt.Println("\n\nEnter a valid entry.")
-   }
+        	if entry > x && err == nil{
+                	x = entry;
+        		break;  
+        	} 
+        	fmt.Println("\n\nEnter a valid entry.")
+   	}
+   }else{
+	fmt.Println("Progress is complete")
+   }	
    return x;	
 }
 
@@ -36,8 +39,7 @@ func RequestChange(x int) (int){
                 x = progressChanger(x)
                 break;
         }else if response == "no"{
-                fmt.Println("Exitting")
-                os.Exit(x)
+                break
         }else{
 		fmt.Println("Enter a valid entry.")
 	}

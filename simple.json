@@ -2,11 +2,29 @@
    "Data": [
       {
          "projectName": "Get this task done",
-         "progress": 40,
+         "progress": 100,
          "projectMembers": [
             "Me",
             "Dummy",
             "Otherguy"
+         ]
+      },
+      {
+         "projectName": "Python Scripting Task",
+         "progress": 40,
+         "projectMembers": [
+            "Thomas",
+            "Thanos",
+            "Davis"
+         ]
+      },
+      {
+         "projectName": "Find this main.c program",
+         "progress": 40,
+         "projectMembers": [
+            "Robert",
+            "Albert",
+            "Paul"
          ]
       }
    ]
