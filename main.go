@@ -7,46 +7,21 @@ import (
 	"go-project-manager/pkg/jsonconvert"
 	"go-project-manager/pkg/progresschanger"
 	"go-project-manager/pkg/taskmanager"
+	"go-project-manager/pkg/input"
 	"github.com/schollz/progressbar/v3"
-	"os"
-	"bufio"
-	"strconv"
 )
 
 var list = mainreader.Listpaste()
-
-func stringEntry() string{
-	scanner := bufio.NewScanner(os.Stdin)
-	scanner.Scan()
-	return scanner.Text()
-}
-
-func intEntry() int{
-	var n int;
-	for{
-		scanner := bufio.NewScanner(os.Stdin)
-		scanner.Scan()
-		entryStr := scanner.Text()
-		entry, err := strconv.Atoi(entryStr)
-		if err == nil{
-			n = entry	
-			break
-		}else{
-			fmt.Println("Enter a valid entry.")
-		}
-	}	
-	return n
-}
 
 func editProjectMembers(entry int){
 	length := len(list.Datalist[entry].ProjectMembers)
 	for{
 		fmt.Println("Do you want to edit the list of project members? ")
-		entryStr3 := stringEntry()
+		entryStr3 := input.StringEntry()
 		if entryStr3 == "y" || entryStr3 == "yes"{
 			for i := 0; i<length; i++{
 				fmt.Println("Enter a new name, or write same (so that it doesn't edit)")
-				entryStr4 := stringEntry()
+				entryStr4 := input.StringEntry()
 				if entryStr4 == "same" || entryStr4 == "Same"{
 					continue
 				}else{
@@ -59,17 +34,16 @@ func editProjectMembers(entry int){
 		}else{
 			fmt.Println("Enter a valid entry.")
 		}
-
 	}
 }
 
 func addProjectMember(entry int){
 	for{
 		fmt.Println("Do you want to add a new Project Member?")
-		entryStr1 := stringEntry()
+		entryStr1 := input.StringEntry()
 		if entryStr1 == "y" || entryStr1 == "yes"{
 			fmt.Println("Enter a new Project Member.")
-			entryStr2 := stringEntry()
+			entryStr2 := input.StringEntry()
 			list.Datalist[entry].ProjectMembers = append(list.Datalist[entry].ProjectMembers, entryStr2)			
 			jsonconvert.Convert(list)
 		}else if  entryStr1 == "n" || entryStr1 == "no"{
@@ -101,7 +75,7 @@ func editLists(){
 	} 
 	// check your main func and add the progresschanger in this one, also try and create that progressName changer too by using scan
 	for{
-		entry := intEntry() 
+		entry := input.IntEntry() 
 		if entry < length{
 			for i := 0; i<length; i++{
 				if entry == i{
@@ -110,12 +84,11 @@ func editLists(){
         				list.Datalist[i].Progress = numb
         				jsonconvert.Convert(list)
 					for{
-						var request string
 						fmt.Println("Do you want to change the ProjectName?")
-						fmt.Scanf("%s", &request)
+						request := input.StringEntry()
 						if request == "yes" || request == "y"{
 							fmt.Println("Now give it a new name.")
-							entryStr1 := stringEntry()
+							entryStr1 := input.StringEntry()
 							list.Datalist[i].ProjectName = entryStr1
 							jsonconvert.Convert(list)
 							editProjectMembers(i)
@@ -138,11 +111,11 @@ func editLists(){
 }
 func CreateProject(){
 	fmt.Println("What name do you want to give your project?")
-	entryStr := stringEntry()
+	entryStr := input.StringEntry()
 	var members []string; 
 	for {
 		fmt.Println("Enter a name of a Project Member, (no) - to stop adding.")
-		entryStr1 := stringEntry()
+		entryStr1 := input.StringEntry()
 		if entryStr1 == "no" || entryStr1 == "No"{
 			break
 		}else{
@@ -169,7 +142,7 @@ func DeleteProject(){
 		fmt.Printf("%d %s",i,list.Datalist[i].ProjectName)	
 	}
 	for{
-		entry := intEntry()
+		entry := input.IntEntry()
 		if entry >= 0 && entry <= length{
 			removeInstance(entry)
 			break
@@ -182,7 +155,7 @@ func DeleteProject(){
 func AskScanner(){
 	for{
 		fmt.Println("\nChoose your Option: (V)-view project lists, (E)-edit project lists, (Exit)-exit the program, (A) - add tasks to each project, (M) - markdown completed tasks, (C) - create new Project, (D) - Delete Project")
-		answer := stringEntry()
+		answer := input.StringEntry()
 		if answer == "V"{
 			viewLists() 
 		}else if answer == "E"{
