@@ -7,7 +7,7 @@ import(
 	"strconv"
 )
 
-func progressChanger(x int) (int){
+func ProgressChanger(x int) (int){
    scanner := bufio.NewScanner(os.Stdin)
    if x < 100 {			
    	for {
@@ -36,7 +36,7 @@ func RequestChange(x int) (int){
         var response string;
         fmt.Scanf("%s", &response)
         if response == "yes"{
-                x = progressChanger(x)
+                x = ProgressChanger(x)
                 break;
         }else if response == "no"{
                 break

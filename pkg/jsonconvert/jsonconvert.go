@@ -8,8 +8,8 @@ import (
 )
 
 func Convert(list mainreader.Datalist) {
-	newF, err := json.MarshalIndent(list, "", "   ")
-	if err!=nil{
+	newF, err := json.Marshal(list)
+	if err != nil{
 		log.Fatal(err)
 	}
 	err1 := os.WriteFile("simple.json", newF, 0664)

@@ -5,10 +5,20 @@ import (
         "log"
 	"encoding/json"
 )
+
+type Task struct {
+	Task string `json:"Task"`
+	Weight int `json:"Weight"`
+	Completed bool `json:"Completed"`
+}
+
 type Data struct {
-        ProjectName string `json:"projectName"`
-        Progress int `json:"progress"`
-        ProjectMembers []string `json:"projectMembers"`
+        ProjectName string `json:"ProjectName"`
+        Progress int `json:"Progress"`
+        ProjectMembers []string `json:"ProjectMembers"`
+	Tasklength int `json:"TaskLength"`
+	TasksCompleted bool `json:"TasksCompleted"`
+	Tasklist []Task `json:"TaskList"`
 }
 
 type Datalist struct{
