@@ -178,27 +178,27 @@ func AskScanner(){
 		fmt.Println("\nChoose your Option: [V] - view project lists, [E] - edit project lists, [Exit] - exit the program, [A] - add tasks to each project, [M] - markdown completed tasks, [C] - create new Project, [D] - Delete Project")
 		fmt.Printf("Enter your input: ")
 		answer := input.StringEntry()
-		if answer == "V"{
-			viewLists() 
-		}else if answer == "E"{
-			editLists()
-		}else if answer == "A"{
-			taskmanager.TasksCreator()
-		}else if answer == "M" {
-			taskmanager.TaskMarkdown()
-		}else if answer == "D"{
-			// breaks so that it makes sure that .json is updated
-			DeleteProject()
-			break
-		}else if answer == "C" || answer == "c"{
-			// breaks so that it makes sure that the .json is updated 
-			CreateProject()
-			break
-		}else if answer == "Exit" || answer == "exit"{
-			break
-		}else{
-			fmt.Println("Please enter a valid response.")
+		switch answer {
+			case "V","v": 
+				viewLists()
+			case "A","a": 
+				editLists() 
+			case "M","m": 
+				taskmanager.TasksCreator()
+			case "D","d": 
+				// breaks so that it makes sure that .json is updated
+				DeleteProject()
+				break	
+			case "C","c": 
+				// breaks so that it makes sures that the .json is updated
+				CreateProject()
+				break	
+			case "Exit","exit","ex","eXit","EXit": 
+				break	
+			default:
+				fmt.Println("Please enter a valid response.")
 		}
+		break
 	}
 }
 	
