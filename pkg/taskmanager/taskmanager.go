@@ -70,44 +70,50 @@ func ProgressEditer(entry int){
 }
 
 
-func TaskEditer(){
+func TaskMarkdown(){
 	length := len(list.Datalist)
-        fmt.Println("Choose the respective index number, in order to mark completion of task.")
-        for i:=0; i < length; i++ {
-                //fmt.Println(i, ",", list.Datalist[i].ProjectName)
-		fmt.Printf("[%d] %s\n",i,list.Datalist[i].ProjectName)
-        }
-	for{
-		entry := intEntry()
-		CheckCompletion(entry)
-		if entry < length {
-			var data = list.Datalist[entry]
-			length0 := len(data.Tasklist)
-			// new func
-			if length0 > 0 && list.Datalist[entry].TasksCompleted != true{
-				fmt.Println("Choose the Task to mark as completed: ")
-				for i := 0; i<length0; i++{
-					if data.Tasklist[i].Completed == false{
-						fmt.Printf("[%d.%d]  %s [ ]\n", entry, i, data.Tasklist[i].Task)
-					}else if data.Tasklist[i].Completed == true{
-						fmt.Printf("[%d.%d]  %s [X]\n", entry, i, data.Tasklist[i].Task)
+	// prevents running of panic error
+	if length > 0{
+        	fmt.Println("Choose the respective index number, in order to mark completion of task.")
+        	for i:=0; i < length; i++ {
+			fmt.Printf("[%d] %s\n",i,list.Datalist[i].ProjectName)
+        	}
+		for{
+			entry := intEntry()
+			CheckCompletion(entry)
+			if entry < length {
+				var data = list.Datalist[entry]
+				// This is the same as list.Datalist[entry].Tasklist
+				length0 := len(data.Tasklist)
+				if length0 > 0 && list.Datalist[entry].TasksCompleted != true{
+					fmt.Println("Choose the Task to mark as completed: ")
+					for i := 0; i<length0; i++{
+						if data.Tasklist[i].Completed == false{
+							fmt.Printf("[%d.%d]  %s [ ]\n", entry, i, data.Tasklist[i].Task)
+						}else if data.Tasklist[i].Completed == true{
+							fmt.Printf("[%d.%d]  %s [X]\n", entry, i, data.Tasklist[i].Task)
+						}
+					}
+					for{
+						entry0 := intEntry()
+						if entry0 <= length0 && data.Tasklist[entry0].Completed == false{
+							data.Tasklist[entry0].Completed = true
+							jsonconvert.Convert(list)
+							ProgressEditer(entry)
+							break
+						}else{
+							fmt.Printf("Please enter a valid response.\n")
+						}
 					}
 				}
-				for{
-					entry0 := intEntry()
-					if entry0 <= length0 && data.Tasklist[entry0].Completed == false{
-						data.Tasklist[entry0].Completed = true
-						jsonconvert.Convert(list)
-						ProgressEditer(entry)
-						break
-					}else{
-						fmt.Println("Please enter a valid response.")
-					}
-				}
+				break
 			}
-			break
-		}
-	}	
+		}	
+	//prevents panic from running
+	}else{
+		fmt.Printf("Error: There are no instances in your Datalist.\n")
+		os.Exit(0)		
+	}
 }
 
 func WeightedTasks(entry int){
@@ -136,16 +142,22 @@ func WeightedTasks(entry int){
 func TasksCreator(){
 	fmt.Println("Enter the index in which you want to add the Tasklist.")
         length := len(list.Datalist)
-        for i := 0; i<length; i++{
-        	fmt.Println(i, "," , list.Datalist[i].ProjectName)
-        }
-        entry := intEntry()
-        for{
-           	if entry < length && entry >= 0{
-                	WeightedTasks(entry)
-                        break
-                }else{
-                	fmt.Println("Please enter a valid entry.")
-                }
-        }
+	// Prevents StackOverflow from happening if .json file has no Datalist instances
+	if length > 0{
+        	for i := 0; i<length; i++{
+        		fmt.Println(i, "," , list.Datalist[i].ProjectName)
+        	}
+        	entry := intEntry()
+        	for{
+           		if entry < length && entry >= 0{
+                		WeightedTasks(entry)
+                        	break
+                	}else{
+                		fmt.Println("Please enter a valid entry.")
+                	}
+        	}
+	}else{
+		fmt.Printf("Error: There is no item in this Datalist.\n")
+		os.Exit(0)
+	}
 }

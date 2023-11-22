@@ -3,6 +3,7 @@ package main
 import ( 
 	"fmt"
 	"slices"
+	"os"
 	"go-project-manager/pkg/mainreader"
 	"go-project-manager/pkg/jsonconvert"
 	"go-project-manager/pkg/progresschanger"
@@ -16,7 +17,7 @@ var list = mainreader.Listpaste()
 func editProjectMembers(entry int){
 	length := len(list.Datalist[entry].ProjectMembers)
 	for{
-		fmt.Println("Do you want to edit the list of project members? ")
+		fmt.Println("Do you want to edit the list of project members or do you want to delete a member? ")
 		entryStr3 := input.StringEntry()
 		if entryStr3 == "y" || entryStr3 == "yes"{
 			for i := 0; i<length; i++{
@@ -31,7 +32,19 @@ func editProjectMembers(entry int){
 			}
 		}else if entryStr3 == "n" || entryStr3 == "no"{ 
 			break;
-		}else{
+		}else if entryStr3 == "d" || entryStr3 == "D" || entryStr3 == "delete" || entryStr3 == "Delete"{
+			for{
+				for i:= 0; i<length; i++{
+					fmt.Printf("%d %v", i, list.Datalist[entry].ProjectMembers[i])
+				}
+				entryint := input.IntEntry()
+				if entryint >= 0 || entryint > length{
+					list.Datalist[entry].ProjectMembers = slices.Delete(list.Datalist[entry].ProjectMembers,entryint,entryint+1)
+					jsonconvert.Convert(list)		
+					break
+				}
+			}
+		}else {
 			fmt.Println("Enter a valid entry.")
 		}
 	}
@@ -69,45 +82,49 @@ func viewLists(){
 
 func editLists(){
 	length := len(list.Datalist)
-	fmt.Println("Choose the respective index number, in order to edit that specific project.")
-	for i:=0; i < length; i++ {
-		fmt.Println(i, ",", list.Datalist[i].ProjectName)
-	} 
-	// check your main func and add the progresschanger in this one, also try and create that progressName changer too by using scan
-	for{
-		entry := input.IntEntry() 
-		if entry < length{
-			for i := 0; i<length; i++{
-				if entry == i{
-					var numb int;
-        				numb = progresschanger.RequestChange(list.Datalist[i].Progress)
-        				list.Datalist[i].Progress = numb
-        				jsonconvert.Convert(list)
-					for{
-						fmt.Println("Do you want to change the ProjectName?")
-						request := input.StringEntry()
-						if request == "yes" || request == "y"{
-							fmt.Println("Now give it a new name.")
-							entryStr1 := input.StringEntry()
-							list.Datalist[i].ProjectName = entryStr1
-							jsonconvert.Convert(list)
-							editProjectMembers(i)
-							addProjectMember(i)
-							break
-						}else if request == "no" || request == "n"{
-							break
-						}else{
-							fmt.Println("Enter a valid input")	
+	if length > 0 {
+		fmt.Println("Choose the respective index number, in order to edit that specific project.")
+		for i:=0; i < length; i++ {
+			fmt.Println(i, ",", list.Datalist[i].ProjectName)
+		} 
+		// check your main func and add the progresschanger in this one, also try and create that progressName changer too by using scan
+		for{
+			entry := input.IntEntry() 
+			if entry < length{
+				for i := 0; i<length; i++{
+					if entry == i{
+        					numb := progresschanger.RequestChange(list.Datalist[i].Progress)
+        					list.Datalist[i].Progress = numb
+        					jsonconvert.Convert(list)
+						for{
+							fmt.Println("Do you want to change the ProjectName?")
+							request := input.StringEntry()
+							if request == "yes" || request == "y"{
+								fmt.Println("Now give it a new name.")
+								entryStr1 := input.StringEntry()
+								list.Datalist[i].ProjectName = entryStr1
+								jsonconvert.Convert(list)
+								addProjectMember(i)
+								editProjectMembers(i)
+								break
+							}else if request == "no" || request == "n"{
+								break
+							}else{
+								fmt.Println("Enter a valid input")	
+							}
 						}
+						break
 					}
-					break
 				}
+			}else{
+			fmt.Println("Enter a valid entry.")
 			}
-		}else{
-		fmt.Println("Enter a valid entry.")
-		}
-		break
-	}	
+			break
+		}	
+	}else{
+		fmt.Printf("Error: There are no Datalist instances.\n")
+		os.Exit(0)
+	}
 }
 func CreateProject(){
 	fmt.Println("What name do you want to give your project?")
@@ -136,10 +153,11 @@ func removeInstance(entry int){
 }
 
 func DeleteProject(){
-	fmt.Println("Which instance do you want to delete?")
 	length := len(list.Datalist)
+	if length > 0{
+	fmt.Println("Which instance do you want to delete?")
 	for i:=0;i<length; i++{
-		fmt.Printf("%d %s",i,list.Datalist[i].ProjectName)	
+		fmt.Printf("%d %s\n",i,list.Datalist[i].ProjectName)	
 	}
 	for{
 		entry := input.IntEntry()
@@ -147,14 +165,18 @@ func DeleteProject(){
 			removeInstance(entry)
 			break
 		}else{
-			fmt.Printf("Please enter a valid input.")
+			fmt.Printf("Please enter a valid input.\n")
 		}
+	}
+	}else{
+		fmt.Printf("Error: Datalist doesn't have any instances.\n")
 	}
 }
 
 func AskScanner(){
 	for{
-		fmt.Println("\nChoose your Option: (V)-view project lists, (E)-edit project lists, (Exit)-exit the program, (A) - add tasks to each project, (M) - markdown completed tasks, (C) - create new Project, (D) - Delete Project")
+		fmt.Println("\nChoose your Option: [V] - view project lists, [E] - edit project lists, [Exit] - exit the program, [A] - add tasks to each project, [M] - markdown completed tasks, [C] - create new Project, [D] - Delete Project")
+		fmt.Printf("Enter your input: ")
 		answer := input.StringEntry()
 		if answer == "V"{
 			viewLists() 
@@ -163,7 +185,7 @@ func AskScanner(){
 		}else if answer == "A"{
 			taskmanager.TasksCreator()
 		}else if answer == "M" {
-			taskmanager.TaskEditer()
+			taskmanager.TaskMarkdown()
 		}else if answer == "D"{
 			// breaks so that it makes sure that .json is updated
 			DeleteProject()
