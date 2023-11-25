@@ -11,7 +11,7 @@ import (
 // This is our .json file for reading and writing purposes
 var File string
 // This is for tracking our one time event
-var Count int = 0
+var Count int = 0  
 
 type Task struct {
 	Task string `json:"Task"`
