@@ -117,7 +117,7 @@ func MemoryLoop() string{
 		log.Fatal(err0)
 	}
 	for{
-		fmt.Printf("Do you want to [C] - Create a new .JSON file, [U] - Use an existing .JSON file, [D] - Delete an existing .JSON file\n")
+		fmt.Printf("Do you want to [C] - Create a new .JSON file, [U] - Use an existing .JSON file, [D] - Delete an existing .JSON file, [E] - Exit the program\n")
 		fmt.Printf("Enter your choice: ")
 		entryStr := input.StringEntry()
 		if entryStr == "C" || entryStr == "c"{
@@ -129,6 +129,8 @@ func MemoryLoop() string{
 			break
 		}else if entryStr == "D" || entryStr == "d"{ 
 			files = DeleteJSON(files)	
+		}else if entryStr == "E" || entryStr == "e" || entryStr == "exit" || entryStr == "Exit"{
+			os.Exit(0)
 		}else{
 			fmt.Printf("Enter a valid response.\n")
 		}

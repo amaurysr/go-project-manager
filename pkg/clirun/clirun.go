@@ -6,7 +6,6 @@ import (
         "os"
         "go-project-manager/pkg/mainreader"
         "go-project-manager/pkg/jsonconvert"
-        "go-project-manager/pkg/progresschanger"
         "go-project-manager/pkg/taskmanager"
         "go-project-manager/pkg/input"
         "github.com/schollz/progressbar/v3"
@@ -86,7 +85,7 @@ func editLists(){
         if length > 0 {
                 fmt.Println("Choose the respective index number, in order to edit that specific project.")
                 for i:=0; i < length; i++ {
-                        fmt.Println(i, ",", list.Datalist[i].ProjectName)
+                        fmt.Printf("[%d] %s\n",i, list.Datalist[i].ProjectName)
                 }
                 // check your main func and add the progresschanger in this one, also try and create that progressName changer too by using scan
                 for{
@@ -94,9 +93,6 @@ func editLists(){
                         if entry < length{
                                 for i := 0; i<length; i++{
                                         if entry == i{
-                                                numb := progresschanger.RequestChange(list.Datalist[i].Progress)
-                                                list.Datalist[i].Progress = numb
-                                                jsonconvert.Convert(list)
                                                 for{
                                                         fmt.Println("Do you want to change the ProjectName?")
                                                         request := input.StringEntry()
@@ -105,7 +101,9 @@ func editLists(){
                                                                 entryStr1 := input.StringEntry()
                                                                 list.Datalist[i].ProjectName = entryStr1
                                                                 jsonconvert.Convert(list)
+								fmt.Println("Now add project members.")
                                                                 addProjectMember(i)
+								fmt.Println("Now edit project members.")
                                                                 editProjectMembers(i)
                                                                 break
                                                         }else if request == "no" || request == "n"{
@@ -123,7 +121,7 @@ func editLists(){
                         break
                 }
         }else{
-                fmt.Printf("Error: There are no Datalist instances.\n")
+                fmt.Println("Error: There are no Datalist instances.")
                 os.Exit(0)
         }
 } 
@@ -198,7 +196,7 @@ func AskScanner(){
                                 // breaks so that it makes sures that the .json is updated
                                 CreateProject()
                                 os.Exit(0)
-                        case "Exit","exit","ex","eXit","EXit":
+                        case "Exit","exit","ex","eXit","EXit","EXIT","ExIT","exIT":
                                 os.Exit(0)
                         default:
                                 fmt.Println("Please enter a valid response.")
