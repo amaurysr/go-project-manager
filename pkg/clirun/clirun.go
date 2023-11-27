@@ -10,6 +10,7 @@ import (
         "go-project-manager/pkg/taskmanager"
         "go-project-manager/pkg/input"
         "github.com/schollz/progressbar/v3"
+	"go-project-manager/pkg/dateconvert"
 )
 
 var list = mainreader.Listpaste()
@@ -143,6 +144,7 @@ func CreateProject(){
         newProject := mainreader.Data{
                 ProjectName: entryStr,
                 ProjectMembers: members,
+		DateCreated: dateconvert.Date(),
         }
         list.Datalist = append(list.Datalist, newProject)
         jsonconvert.Convert(list)
@@ -182,10 +184,12 @@ func AskScanner(){
                 switch answer {
                         case "V","v":
                                 viewLists()
-                        case "A","a":
+                        case "E","e":
                                 editLists()
+			case "A", "a": 
+				taskmanager.TasksCreator()
                         case "M","m":
-                                taskmanager.TasksCreator()
+                                taskmanager.TaskMarkdown()
                         case "D","d":
                                 // breaks so that it makes sure that .json is updated
                                 DeleteProject()

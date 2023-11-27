@@ -26,6 +26,8 @@ type Data struct {
 	Tasklength int `json:"TaskLength"`
 	TasksCompleted bool `json:"TasksCompleted"`
 	Tasklist []Task `json:"TaskList"`
+	DateCreated string `json:"DateCreated"`
+	DateCompleted string `json:"DateCompleted"`
 }
 
 type Datalist struct{

@@ -6,6 +6,7 @@ import( "bufio"
 	"strconv"
 	"go-project-manager/pkg/mainreader"
 	"go-project-manager/pkg/jsonconvert"
+	"go-project-manager/pkg/dateconvert"
 )
 
 var MAX_WEIGHT int = 100 
@@ -45,6 +46,7 @@ func CheckCompletion(entry int){
 	}
 	if length == numbofCompleted{
 		list.Datalist[entry].TasksCompleted = true
+		list.Datalist[entry].DateCompleted = dateconvert.Date() 
 		jsonconvert.Convert(list)
 	}	
 }

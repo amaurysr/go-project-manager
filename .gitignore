@@ -1,9 +1,6 @@
 pseudo.md
 *.swp
-simple.json
-simpleton.json
-simple2.json
-simple3.json
-create1.json 
+*.json
+!filememory.json
 .main.go.swn
 .pseudo.md.swo
